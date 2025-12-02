@@ -2,10 +2,10 @@
 void printEvensBinaryStyle(int arr[], int left, int right) {
     if (left > right) return;
     int mid = left + (right - left) / 2;
+    printEvensBinaryStyle(arr, left, mid - 1);
     if (arr[mid] % 2 == 0) {
         printf("%d ", arr[mid]);
     }
-    printEvensBinaryStyle(arr, left, mid - 1);
     printEvensBinaryStyle(arr, mid + 1, right);
 }
 int main() {
