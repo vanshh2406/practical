@@ -1,27 +1,34 @@
 #include <stdio.h>
-void printEvensBinaryStyle(int arr[], int left, int right) {
-    if (left > right) return;
-    int mid = left + (right - left) / 2;
-    printEvensBinaryStyle(arr, left, mid - 1);
-    if (arr[mid] % 2 == 0) {
-        printf("%d ", arr[mid]);
+#include <stdlib.h>
+int cmpfunc(const void *a, const void *b) {
+    return (*(int*)a - *(int*)b);
+}
+void bs(int *nums, int n, int target, int low, int high) {
+    if (target > nums[n-1]) return;
+    while (low <= high) {
+        int mid = low + (high - low) / 2;
+        if (nums[mid] == target) {
+            printf("%d\n", target);
+            break;
+        } else if (nums[mid] > target) {
+            high = mid - 1;
+        } else {
+            low = mid + 1;
+        }
     }
-    printEvensBinaryStyle(arr, mid + 1, right);
+    bs(nums, n, target + 2, 0, n - 1);
 }
 int main() {
     int n;
-    printf("Enter number of elements: ");
-    if (scanf("%d", &n) != 1 || n <= 0) {
-        printf("Invalid size\n");
-        return 1;
-    }
+    printf("Enter the size of array: ");
+    scanf("%d", &n);
     int arr[n];
-    printf("Enter %d integers:\n", n);
-    for (int i = 0; i < n; ++i) {
+    printf("Enter the elements of array: ");
+    for(int i=0;i<n;i++){
         scanf("%d", &arr[i]);
     }
-    printf("Multiples of 2 in the array (order depends on recursion):\n");
-    printEvensBinaryStyle(arr, 0, n - 1);
-    printf("\n");
+    qsort(arr, n, sizeof(int), cmpfunc);
+    int initialtarget = (arr[0] % 2 == 0) ? arr[0] : arr[0] + 1;
+    bs(arr, n, initialtarget, 0, n - 1);
     return 0;
 }
